@@ -1,0 +1,17 @@
+.modultable th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border: solid black 1px;
+}
+
+
+.modultable td {
+  padding-left:0.5em;
+  padding-right: 0.5em;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  border: solid black 1px;
+
+}
