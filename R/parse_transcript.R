@@ -15,6 +15,21 @@ extract_tor_stud <- function(tor){
     separate_rows(value, sep="\n") %>%
     separate(value, into= c("name", "type", "type2", "date", "grade", "state", "lp", "notes", "try"), sep="\\s{2,}")
 
+  x = as.matrix(x)
+  name <- x[4,1]
+
+  row = which(startsWith(x[,3], "Matrikelnummer:"))
+  matrikelnummer = x[row,4]
+
+  row = which(startsWith(x[,1], "Abschluss:"))
+  degree = x[row,2]
+
+  studentinfo <- tibble(name, matrikelnummer,degree)
+
+  return(studentinfo)
+
+
+  # Code unten funktioniert leider nicht auf Linux
   anrede <- x[3,1] %>% pull()
   name <- x[4,1] %>% pull()
   street <- x[5,1] %>% pull()
