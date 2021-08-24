@@ -1,3 +1,21 @@
+# Default current semester
+ get_current_semester = function(date = Sys.Date()) {
+  ye = as.integer(format(date, "%y"))
+  month = lubridate::month(date)
+
+  # Next summer term
+  if (month >= 11) {
+    ye = ye+1
+    sem = 0
+  } else if (month <= 4) {
+    sem = 0
+  # Winter term
+  } else {
+    sem = 5
+  }
+  ye*10+sem
+}
+
 
 timedMessage = function (id, msg = "", html = msg, ui = HTML(html), millis = 3000,empty.msg = "", empty.ui = HTML(empty.msg), app = getApp()) {
     restore.point("timedMessage")
