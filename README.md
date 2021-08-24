@@ -2,7 +2,7 @@
 
 Eine Shiny-App zur Wahl von Profilen fuer BA/MA Wiwi Uni ulm
 
-- Fuer ein Beispiel lasse `example` in `pw_app.R` laufen und passe die Pfade ggf. an.
+- Fuer ein Beispiel lasse den Code in `example` in `pw_app.R` laufen und passe die Pfade ggf. an.
   - Beispiele der Dateien `profile.csv` and `profilwahl_antrag_tpl.docs` koennen hier gefunden werden `inst/example_material`
 
 
