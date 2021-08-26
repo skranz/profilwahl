@@ -16,8 +16,7 @@ pwApp = function(stuko.db.dir=getwd(), login.db.dir = getwd(), prof.csv = "profi
   app = eventsApp()
 
   app$glob$doc.tpl.file = doc.tpl.file
-  app$glob$stuko.db = get.stukodb(stuko.db.dir)
-  app$glob$stuko.db = get.stukodb(stuko.db.dir)
+  app$glob$stukodb = get.stukodb(stuko.db.dir)
   app$glob$all.prof = read.csv(prof.csv,encoding = "UTF-8", strip.white = TRUE)
   app$glob$mail.config = mail.config
 
