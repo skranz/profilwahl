@@ -3,7 +3,7 @@ make.antrag = function(file, pw=app$pw, app=getApp()) {
 
   #file = "test.docx"
   tpl_file = app$glob$antrag.tpl.file
-  pw$profil
+  pw$profile
 
   doc = read_docx(tpl_file)
 

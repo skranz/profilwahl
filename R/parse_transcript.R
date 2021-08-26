@@ -1,4 +1,41 @@
-# Code zum groessten Teil von Alex uebernommen
+
+# Habe die tor scrapping Funktion (fast) direkt von Alex uebernommen
+# konvertiere hier die Daten so, dass sie zur Profilwahl App
+# passen. Mache auch minimale Checks. Diese koennen noch
+# ausgeweitet werden.
+tor.to.pw = function(tor = app$tor, app=getApp()) {
+  restore.point("tor2pw")
+  stud = tor$stud
+  pw = empty.pw()
+  pw$studname = stud$name
+  pw$matnr = stud$matrikelnummer
+
+  degree = stud$degree
+  if (startsWith(degree,"Bachelor")) {
+    pw$bama = "ba"
+  } else if (startsWith(degree,"Master")) {
+    pw$bama = "ma"
+  } else {
+    return(list(ok = FALSE, msg="Konnte Abschluss (Bachelor oder Master) nicht korrekt einlesen."))
+  }
+
+  tor.mods = tor$module %>%
+    rename(code = modul_code)
+
+  all.mods = app$glob$all.mods %>%
+    filter(bama == pw$bama)
+
+  pmods = semi_join(tor.mods, all.mods, by="code")
+  pw$mods = all.mods %>% semi_join(pmods, by="code")
+
+  pw$mopr = semi_join(app$glob$all.mopr, pw$mods, by=c("code","bama"))
+
+  pw$other.mods = anti_join(tor.mods, all.mods, by="code") %>%
+    rename(titel = modul_name)
+
+  list(ok=TRUE,pw=pw)
+}
+
 
 import.tor = function(pdf.file) {
   restore.point("import.tor")
@@ -8,7 +45,7 @@ import.tor = function(pdf.file) {
   list(stud=stud, module=module)
 }
 
-
+# Code zum groessten Teil von Alex uebernommen
 extract_tor_stud <- function(tor){
   restore.point("extract_tor_stud")
   x <- enframe(tor) %>%

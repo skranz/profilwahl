@@ -1,0 +1,29 @@
+#library(dbmisc);dbCreateSQLiteFromSchema(update=!TRUE,"pwdb.yaml","C:/libraries/stuko/profilwahl/inst/schema",db.name = "pwdb.sqlite",db.dir = "C:/libraries/stuko/")
+
+pw:
+  table:
+    pwid: TEXT
+    email: TEXT
+    create_time: DATETIME
+# "o" = offen, "e" = "erstellt"
+    status: TEXT
+    studname: TEXT
+    matnr: TEXT
+    bama: TEXT
+    geburtstag: TEXT
+    num_profile: INTEGER
+  unique_index:
+    - pwid
+  index:
+    - status
+
+promod:
+  table:
+    pwid: TEXT
+    profil: TEXT
+    profil_num: INTEGER
+    code: TEXT
+    modulname: TEXT
+    ects: INTEGER
+  unique_index:
+    - pwid, profil, code
