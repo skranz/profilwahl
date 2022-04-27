@@ -24,8 +24,8 @@ pwApp = function(stuko.db.dir=getwd(), login.db.dir = getwd(), prof.csv = "profi
 
   load.all.module(glob = app$glob)
   if (!is.null(aah.csv)) {
-    glob$aah.df = read.csv(aah.csv,quote = '"')
-    add.aah.to.modules(glob$aah.df)
+    app$glob$aah.df = read.csv(aah.csv,quote = '"')
+    add.aah.to.modules(app$glob$aah.df)
   }
 
 
