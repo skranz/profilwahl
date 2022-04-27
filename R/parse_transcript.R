@@ -63,7 +63,8 @@ extract_tor_stud <- function(tor){
 
   row = which(startsWith(x[,1], "Abschluss:"))
   degree = x[row,2]
-  geburtstag <- dmy(x[19,4])
+  #geburtstag <- as_character(dmy(x[19,4]))
+  geburtstag <- x[19,4]
 
   studentinfo <- tibble(name, matrikelnummer,degree, geburtstag)
 
