@@ -11,7 +11,7 @@ sendbtn.click = function(pw=app$pw,..., app=getApp(), db=get.pwdb()) {
   pw$create_time = Sys.time()
   pw$status = "o"
   pw$num_profile = length(pw$profile)
-  pw$geburtstag = ""
+  #pw$geburtstag = ""
 
   pr.mod.to.promod = function(pr.mod, profil_num) {
     pr.mod %>% transmute(

@@ -9,6 +9,7 @@ tor.to.pw = function(tor = app$tor, app=getApp()) {
   pw = empty.pw()
   pw$studname = stud$name
   pw$matnr = stud$matrikelnummer
+  pw$geburtstag = stud$geburtstag
 
   degree = stud$degree
   if (startsWith(degree,"Bachelor")) {
@@ -62,8 +63,9 @@ extract_tor_stud <- function(tor){
 
   row = which(startsWith(x[,1], "Abschluss:"))
   degree = x[row,2]
+  geburtstag <- dmy(x[19,4])
 
-  studentinfo <- tibble(name, matrikelnummer,degree)
+  studentinfo <- tibble(name, matrikelnummer,degree, geburtstag)
 
   return(studentinfo)
 
