@@ -11,7 +11,7 @@ example = function() {
   viewApp(app, launch.browser = TRUE)
 }
 
-pwApp = function(stuko.db.dir=getwd(), login.db.dir = getwd(), prof.csv = "profile.csv", doc.tpl.file = "profile_tpl.docx",mail.config=NULL,...) {
+pwApp = function(stuko.db.dir=getwd(), login.db.dir = getwd(), prof.csv = "profile.csv",  aah.csv = "aah.csv", doc.tpl.file = "profile_tpl.docx",mail.config=NULL,...) {
   restore.point("pwApp")
   app = eventsApp()
 
@@ -23,6 +23,12 @@ pwApp = function(stuko.db.dir=getwd(), login.db.dir = getwd(), prof.csv = "profi
 
 
   load.all.module(glob = app$glob)
+  if (!is.null(aah.csv)) {
+    glob$aah.df = read.csv(aah.csv,quote = '"')
+    add.aah.to.modules(glob$aah.df)
+  }
+
+
   app$pw = empty.pw()
   app$ui = fluidPage(
     title="Profile festlegen (WiWi Uni Ulm)",
@@ -54,7 +60,7 @@ pw.ui = function(app=getApp()) {
   ui = navlistPanel(id="pwPanel",
     tabPanel("Schritt 1: Transkript einlesen",value="step1", step1_ui()),
     tabPanel("Schritt 2: Profile festlegen",value="step2",  uiOutput("step2UI")),
-    tabPanel("Schritt 3: Antrag herunterladen",value="step3", uiOutput("step3UI")),
+    tabPanel("Schritt 3: Auswahl absenden",value="step3", uiOutput("step3UI")),
     widths = c(2,10)
   )
   ui

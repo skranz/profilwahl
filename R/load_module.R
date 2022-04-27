@@ -47,3 +47,19 @@ load.all.module = function(from.sem=NA, to.sem=NA, db = get.stukodb(), glob=getA
   glob$all.mopr = mopr
   invisible(list(mods=mods, mopr=mopr))
 }
+
+add.aah.to.modules = function(aah.df = glob$aah.df, glob = getApp()$glob) {
+  restore.point("add.aah.to.modules")
+
+  aah.df = aah.df %>%
+    rename(titel = name) %>%
+    mutate(code = paste0("A-",code), modulid=code)
+
+  aah.mod = aah.df %>%
+    group_by(code, bama, titel) %>%
+    summarize(profile = paste0(profil, collapse=", "))
+
+  all.mods = bind_rows(aah.mod, glob$all.mods)
+
+  all.mopr = bind_rows(aah.df, glob$all.mopr)
+}
