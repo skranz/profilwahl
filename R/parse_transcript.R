@@ -24,6 +24,10 @@ tor.to.pw = function(tor = app$tor, app=getApp()) {
     rename(code = modul_code)
 
 
+  # Filtere nur bestandene Module
+  tor.mods = tor.mods %>% filter(state=="BE")
+
+
   all.mods = app$glob$all.mods %>%
     filter(bama == pw$bama)
 
