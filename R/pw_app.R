@@ -7,7 +7,7 @@ example = function() {
 
   mail.config = list(from = "alexander.rieber@uni-ulm.de",smtp = list(host.name = "thales.mathematik.uni-ulm.de"))
 
-  app = pwApp(init.userid="sebastian.kranz@uni-ulm.de", need.password=TRUE, dbname="loginDB.sqlite", login.title=login.title)
+  app = pwApp(init.userid="sebastian.kranz@uni-ulm.de", need.password=TRUE, dbname="loginDB.sqlite", login.title=login.title, aah.csv = "profilwahl_app/aah.csv")
   viewApp(app, launch.browser = TRUE)
 }
 
@@ -291,6 +291,7 @@ step1_ui = function() {
 }
 
 step2_ui = function(pw = app$pw, app=getApp()) {
+  #restore.point("step2_ui")
   has.feas = NROW(pw$feas$single) > 0
 
 
@@ -301,7 +302,7 @@ step2_ui = function(pw = app$pw, app=getApp()) {
     )
   } else {
     lab = c("Keine Auswahl", pw$feas$single$profil, pw$feas$pair$label)
-    choices = 0:length(lab)
+    choices = 0:(length(lab)-1)
     names(choices) = lab
 
     main = tagList(

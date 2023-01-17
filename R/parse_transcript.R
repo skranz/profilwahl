@@ -23,7 +23,6 @@ tor.to.pw = function(tor = app$tor, app=getApp()) {
   tor.mods = tor$module %>%
     rename(code = modul_code)
 
-
   # Filtere nur bestandene Module
   tor.mods = tor.mods %>% filter(state=="BE")
 
@@ -39,8 +38,59 @@ tor.to.pw = function(tor = app$tor, app=getApp()) {
   pw$other.mods = anti_join(tor.mods, all.mods, by="code") %>%
     rename(titel = modul_name)
 
+  pw = add.aah.modules.to.pw(tor, pw)
+
   list(ok=TRUE,pw=pw)
 }
+
+# Written on 2023-01-17
+# Add AAH modules mapped by module name
+add.aah.modules.to.pw = function(tor, pw, aah.df = getApp()$glob$aah.df) {
+  restore.point("add.aah.modules.to.pw")
+
+  # No aah modules defined
+  if (NROW(aah.df)==0) return(pw)
+
+  # We match aah modules by name, not by code!
+  tor.aah = tor$aah %>% filter(state=="BE")
+
+  # Student has no aah modules
+  if (NROW(tor.aah)==0) return(pw)
+
+
+  # Match aah modules by name (not code) in lowercase letters
+  tor.aah$lname = tolower(tor.aah$name)
+  aah.df$lname = tolower(aah.df$name)
+  paah = left_join(tor.aah, aah.df, by="lname", suffix=c("",".y")) %>%
+    filter(!is.na(profil))
+
+
+
+  # No matched aah module found
+  if (NROW(paah)==0) return(pw)
+
+  aah.mopr = paah %>%
+    transmute(modulid = paste0("AAH_", code), bama=bama, profil=profil,last.sem.modul=NA, code=code,  titel = name, ects=lp)
+
+  aah.mods = aah.mopr %>%
+    group_by(modulid, code, last.sem.modul, titel, ects, bama) %>%
+    summarize(
+      profile = paste0(profil,collapse=", ")
+    ) %>%
+    ungroup()
+
+
+  pw$mods = bind_rows(pw$mods, aah.mods)
+  pw$mopr = bind_rows(pw$mopr, aah.mopr)
+
+  no.paah = anti_join(tor.aah, aah.df, by="lname")
+  other.aah = no.paah %>%
+    select(code, titel = name, type, type2, date, grade, state, lp, notes)
+  pw$other.mods = bind_rows(pw$other.mods, other.aah)
+  pw
+
+}
+
 
 
 import.tor = function(pdf.file) {
@@ -104,11 +154,10 @@ extract_tor_module <- function(tor){
 }
 
 # Annerkannte Leistungen
-extract_tor_aah <- function(tor, add.A.to.code=TRUE){
+extract_tor_aah <- function(tor,...){
   restore.point("extract_tor_aah")
   df = tor_transcript_df(tor) %>%
-    filter(has.substr(notes,"AAH"))  %>%
-    mutate(code )
+    filter(has.substr(notes,"AAH"))
   return(df)
 }
 
