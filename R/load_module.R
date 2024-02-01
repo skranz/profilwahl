@@ -33,7 +33,17 @@ load.all.module = function(from.sem=NA, to.sem=NA, db = get.stukodb(), glob=getA
     ) %>%
     ungroup()
 
-  mopr = left_join(mopr, mods, by="modulid")
+  # We may have multiple modules with the
+  # same modulcode: then only take the newest
+  mods = mods %>%
+    group_by(code) %>%
+    mutate(is_last = last.sem.modul == max(last.sem.modul)) %>%
+    ungroup() %>%
+    filter(is_last) %>%
+    select(-is_last)
+
+  mopr = left_join(mopr, mods, by="modulid") %>%
+    filter(!is.na(last.sem.modul))
 
   pr.str = mopr %>%
     group_by(code, bama) %>%

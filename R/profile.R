@@ -1,6 +1,7 @@
 # Find possible profiles
 
 find.feasible.profiles = function(pw = app$pw, app=getApp()) {
+  restore.point("find.feasible.profiles")
   all.prof = filter(app$glob$all.prof, bama == pw$bama)
   #all.prof$min_ects = 7
 
