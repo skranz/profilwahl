@@ -56,33 +56,23 @@ extract_tor_stud <- function(tor){
     separate(value, into= c("name", "type", "type2", "date", "grade", "state", "lp", "notes", "try"), sep="\\s{2,}")
 
   x = as.matrix(x)
-  name <- x[4,1]
+  name <- x[3,1]
 
   row = which(startsWith(x[,3], "Matrikelnummer:"))
-  matrikelnummer = x[row,4]
+  matrikelnummer = parse_number(x[row,3])
 
   row = which(startsWith(x[,1], "Abschluss:"))
   degree = x[row,2]
   #geburtstag <- as_character(dmy(x[19,4]))
-  geburtstag <- x[19,4]
+  geburtstag <- dmy(x[19,4])
+  street <- x[4,1]
+  place <- x[6,1]
+  fspo <- x[18,3] %>% parse_number()
+  semester <- substr(x[20,2], start = 1, stop = 2) %>% parse_number()
 
-  studentinfo <- tibble(name, matrikelnummer,degree, geburtstag)
+  studentinfo <- tibble(name, matrikelnummer, degree, geburtstag, street, place, fspo, semester)
 
-  return(studentinfo)
-
-
-  # Code unten funktioniert leider nicht auf Linux
-  anrede <- x[3,1] %>% pull()
-  name <- x[4,1] %>% pull()
-  street <- x[5,1] %>% pull()
-  place <- x[7,1] %>% pull()
-  matrikelnummer <- as.numeric(x[17,4] %>% pull())
-  fspo <- x[18,4] %>% pull()
-  degree <- x[19,2] %>% pull()
-  semester <- x[20,2] %>% pull()
-  born <- dmy(x[19,4] %>% pull())
-
-  studentinfo <- tibble(anrede, name, street, place, matrikelnummer, fspo, degree, semester, born)
+  #studentinfo <- tibble(name, matrikelnummer,degree, geburtstag)
 
   return(studentinfo)
 }
