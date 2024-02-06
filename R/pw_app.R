@@ -24,7 +24,12 @@ pwApp = function(stuko.db.dir=getwd(), login.db.dir = getwd(), prof.csv = "profi
 
   load.all.module(glob = app$glob)
   if (!is.null(aah.csv)) {
-    app$glob$aah.df = read.csv(aah.csv,quote = '"')
+    df =read.csv(aah.csv,quote = '"') %>% unique()
+    df$bama = trimws(df$bama)
+    df$name = trimws(df$name)
+    df$profil = trimws(df$profil)
+
+    app$glob$aah.df = df
     add.aah.to.modules(app$glob$aah.df)
   }
 

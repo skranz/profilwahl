@@ -59,8 +59,10 @@ add.aah.modules.to.pw = function(tor, pw, aah.df = getApp()$glob$aah.df) {
 
 
   # Match aah modules by name (not code) in lowercase letters
-  tor.aah$lname = tolower(tor.aah$name)
-  aah.df$lname = tolower(aah.df$name)
+  tor.aah$lname = trimws(tolower(tor.aah$name))
+  aah.df$lname = trimws(tolower(aah.df$name))
+
+
   paah = left_join(tor.aah, aah.df, by="lname", suffix=c("",".y")) %>%
     filter(!is.na(profil))
 
